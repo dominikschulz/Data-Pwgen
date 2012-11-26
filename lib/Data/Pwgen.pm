@@ -127,6 +127,35 @@ L<Crypt::GeneratePassword>, L<String::Random>, L<Data::Random>, L<String::MkPass
 
 L<http://neilb.org/reviews/passwords.html>: a review of CPAN modules for generating passwords.
 
+=head1 REASONING
+
+There are many modules for generating random strings or passwords.
+
+This section explains my reason for writing this module and why you wouldn't want to use
+it in some cases.
+
+=head2 WHY USE THIS MODULE?
+
+Use this module if you need code which is easy to comprehend and review.
+
+Use this module if you do not have strict constraints on cryptographic security
+and you don't need passwords/strings which are easy to remember.
+
+These strings are made to be used by machines, not for humans.
+
+This module is rather fast. It doesn't use fancy tricks to cut the time,
+but the approach used for generating the passwords is simple and
+thus this module won't block for a long time.
+
+The runtime complexity is about O(n*m) where n is the length of the chosen character class
+and m is the requested length of the password.
+
+=head2 WHY NOT USE THIS MODULE?
+
+If you need either pronounceable password or have high requirements for the cryptographic
+properties of the generated strings you should not use this module. In this case please
+have a look at those listed above or Neils' great review.
+
 =cut
 
 1; # End of Data::Pwgen
