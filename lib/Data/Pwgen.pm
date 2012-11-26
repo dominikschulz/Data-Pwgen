@@ -5,15 +5,15 @@ use warnings;
 use strict;
 use 5.008;
 
-=head1 NAME
+use parent 'Exporter';
 
-Data::Pwgen - Password generation and assessment
+our @EXPORT_OK = qw(pwgen pwstrength);
 
 =head1 SYNOPSIS
 
-    use Data::Pwgen;
-    my $pass = &Data::Pwgen::pwgen(12);
-    my $str = &Data::Pwgen::strength($pass);
+  use Data::Pwgen qw(pwgen pwstrength);
+  my $pass = pwgen(12);
+  my $str  = pwstrength($pass);
 
 =head1 DESCRIPTION
 
@@ -40,11 +40,48 @@ This is a simple module that implements generation and assesment of secure passw
     my $min_length = 8;
     ## use critic
 
-=func pwgen
+=func pwgen($length, $charclass)
 
-Generate a passwort with the (optional) given length and (also optional) given character class.
+Generate a password with the (optional) given length and (also optional) given character class.
+The default length is 16. If specified, the character class must be one of the following:
+
+=over 4
+
+=item lower
+
+Lower-case letters.
+
+=item upper
+
+Upper-case letters.
+
+=item chars
+
+Lower- and upper-case letters.
+
+=item nums
+
+The digits 0 through 9.
+
+=item signs
+
+The following characters: % $ _ - + * & / = ! #
+
+=item alphanum
+
+Lower- and upper-case letters and digits.
+
+=item alphasym
+
+I<alphanum> plus I<signs>.
+
+=back
+
+If you pass anything other than one of the above, it will fall back to the default,
+which is I<alphanum>.
 
 =cut
+
     sub pwgen {
         my $length = shift || $default_length;
         my $class  = shift || 'alphanum';
@@ -55,12 +92,13 @@ Generate a passwort with the (optional) given length and (also optional) given c
         return $pw;
     }
 
-=func strength
+=func pwstrength
 
 Returns a numeric rating of the quality of the supplied (password) string.
 
 =cut
-    sub strength {
+
+    sub pwstrength {
         my $pw       = shift;
         my $strength = 0;
         $strength += length($pw) - ($min_length+1);
@@ -70,6 +108,25 @@ Returns a numeric rating of the quality of the supplied (password) string.
         $strength++ if ( $pw =~ m/[^A-Z0-9]/i );    # non-alphanums
         return $strength;
     }
+
+=func strength
+
+An alias for pwstrength(), retained for backwards compatibility.
+At some point this alias will go away.
+
+=cut
+
+    *strength = \&pwstrength;
 }
+
+=head1 SEE ALSO
+
+The following modules provide similar capabilities:
+L<App::Genpass>,
+L<Crypt::GeneratePassword>, L<String::Random>, L<Data::Random>, L<String::MkPasswd>.
+
+L<http://neilb.org/reviews/passwords.html>: a review of CPAN modules for generating passwords.
+
+=cut
 
 1; # End of Data::Pwgen
