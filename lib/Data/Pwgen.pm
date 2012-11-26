@@ -156,6 +156,14 @@ If you need either pronounceable password or have high requirements for the cryp
 properties of the generated strings you should not use this module. In this case please
 have a look at those listed above or Neils' great review.
 
+=head2 WHY WAS THIS MODULE WRITTEN?
+
+When looking for suiteable modules on CPAN I found that those present were either unmaintained,
+had a very bad worst-case runtime or were completely unreadable.
+
+Please not that this code was written some time ago for use in L<VBoxAdm|http://www.vboxadm.net/>
+some time ago, but refactored and released on its own just now.
+
 =cut
 
 1; # End of Data::Pwgen
