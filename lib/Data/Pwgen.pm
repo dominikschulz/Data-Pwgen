@@ -33,7 +33,6 @@ This is a simple module that implements generation and assesment of secure passw
     $rep{'chars'}    = [ @{ $rep{'lower'} },    @{ $rep{'upper'} } ];
     $rep{'alphanum'} = [ @{ $rep{'chars'} },    @{ $rep{'nums'} } ];
     $rep{'alphasym'} = [ @{ $rep{'alphanum'} }, @{ $rep{'signs'} } ];
-    my $entropy = 0;
 
     ## no critic (ProhibitMagicNumbers)
     my $default_length = 16;
@@ -86,8 +85,6 @@ which is I<alphanum>.
         my $length = shift || $default_length;
         my $class  = shift || 'alphanum';
         $rep{$class} or $class = 'alphanum';
-        $entropy++;
-        srand( time() + $entropy );
         my $pw = join( q{}, map { $rep{$class}[ rand( $#{ $rep{$class} } ) ] } 0 .. $length - 1 );
         return $pw;
     }
